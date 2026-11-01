@@ -1,0 +1,87 @@
+apply plugin: 'com.android.application'
+
+// Monotonic version from git history so every served APK installs as an
+// UPGRADE (preserving app data — incl. downloaded models) instead of a
+// same-version reinstall that tempts an uninstall/wipe cycle.
+def gitCommitCount = {
+    try {
+        def out = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'rev-list', '--count', 'HEAD'
+            standardOutput = out
+        }
+        return out.toString().trim().toInteger()
+    } catch (Exception ignored) {
+        return 1
+    }
+}
+
+android {
+    namespace "com.unifiedexpenseos.app"
+    compileSdk rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId "com.unifiedexpenseos.app"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode gitCommitCount()
+        versionName "0.1." + gitCommitCount()
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        // Real devices are arm64; dropping x86/x86_64/arm32 halves the APK
+        // (the MediaPipe GenAI runtime ships large per-ABI native libs).
+        // Remove the filter if an x86_64 emulator build is ever needed.
+        ndk {
+            abiFilters "arm64-v8a"
+        }
+        aaptOptions {
+             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
+             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
+            // '!*.apk' keeps the web-served sideload APK (web/public/*.apk)
+            // out of the native bundle — otherwise each build would embed the
+            // previous APK inside itself. '!mediapipe-wasm' keeps the ~79 MB
+            // browser-LLM WASM runtime out too: the native app uses the
+            // LocalLlm plugin, never the WebGPU path.
+            ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~:!*.apk:!mediapipe-wasm'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+repositories {
+    flatDir{
+        dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
+    implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+    implementation project(':capacitor-android')
+    // On-device small-model inference for assist parsing/chat (LocalLlmPlugin,
+    // unified-expense-os-iqa). Model weights are NOT bundled — the user imports
+    // a compatible bundle (e.g. Gemma 3 1B int4) via the system file picker.
+    // 0.10.35 (latest as of 2026-07): needed for newer model architectures
+    // (Gemma 4 E2B) and .litertlm bundle support.
+    implementation "com.google.mediapipe:tasks-genai:0.10.35"
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    implementation project(':capacitor-cordova-android-plugins')
+}
+
+apply from: 'capacitor.build.gradle'
+
+try {
+    def servicesJSON = file('google-services.json')
+    if (servicesJSON.text) {
+        apply plugin: 'com.google.gms.google-services'
+    }
+} catch(Exception e) {
+    logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}

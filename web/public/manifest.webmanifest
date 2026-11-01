@@ -1,0 +1,17 @@
+{
+  "name": "Unified Expense OS",
+  "short_name": "Expense OS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f6f8",
+  "theme_color": "#202228",
+  "description": "A self-hosted local-first web app for personal plus shared household finance.",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -1,0 +1,712 @@
+/* Design tokens — light scheme is the base, dark overrides below. */
+:root {
+  color-scheme: light dark;
+  --topbar-h: 56px;
+  --bottomnav-h: 60px;
+  /* Spacing scale. The layout was built from accreted 12/14/16/20/24px
+     values; these are the rungs it actually settled on, named so new work
+     picks from a scale instead of guessing a fresh number. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  /* Type scale. --text-money is its own rung on purpose: in a money app the
+     number the user opened the app for should outrank the heading above it,
+     and at 20px it was tying with a 16px panel title. */
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 14px;
+  --text-lg: 16px;
+  --text-title: 22px;
+  --text-money: 28px;
+  --canvas: #f5f6f8;
+  --surface: #ffffff;
+  --surface-muted: #f0f2f5;
+  --ink: #191b20;
+  --ink-soft: #656a73;
+  --line: #dfe2e7;
+  --line-strong: #c7cbd2;
+  --accent: #4f5fc7;
+  --accent-hover: #3f4eae;
+  --accent-soft: #eef0ff;
+  --on-accent: #ffffff;
+  --positive: #177245;
+  --positive-soft: #e8f5ee;
+  --negative: #b33a3a;
+  --negative-soft: #faecec;
+  --negative-line: #e9bcbc;
+  --warning: #8a5a00;
+  --warning-soft: #fff4d6;
+  --nav: #202228;
+  --nav-text: #f7f8fa;
+  --nav-control: #2c2f36;
+  --nav-line: #4a4d55;
+  --nav-muted: #d7d9de;
+  --placeholder: #858a94;
+  --toast-bg: #24262c;
+  --toast-text: #f7f8fa;
+  --shadow-header: 0 4px 12px rgb(18 20 24 / 16%);
+  --shadow-panel: 0 1px 2px rgb(25 27 32 / 5%);
+  --shadow-toast: 0 8px 24px rgb(18 20 24 / 28%);
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+}
+
+/* Manual theme override (unified-expense-os-2uv): Settings stamps
+   data-theme="light|dark" on <html> (lib/prefs.ts); without it the system
+   scheme decides. The dark token set therefore appears twice — once gated on
+   the media query (system mode), once on the attribute — keep them in sync. */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas: #101216;
+  --surface: #191c22;
+  --surface-muted: #20242b;
+  --ink: #eceef1;
+  --ink-soft: #9aa1ab;
+  --line: #2a2e36;
+  --line-strong: #3a3f49;
+  --accent: #8b97e8;
+  --accent-hover: #a0aaed;
+  --accent-soft: #262b45;
+  --on-accent: #14161a;
+  --positive: #4cc38a;
+  --positive-soft: #142a1e;
+  --negative: #e5726f;
+  --negative-soft: #331d1d;
+  --negative-line: #5c2e2e;
+  --warning: #d9a514;
+  --warning-soft: #2e2610;
+  --nav: #14161a;
+  --nav-text: #f2f3f5;
+  --nav-control: #22252b;
+  --nav-line: #3a3f49;
+  --nav-muted: #b9bdc4;
+  --placeholder: #6d737d;
+  --toast-bg: #2c2f36;
+  --toast-text: #f2f3f5;
+  --shadow-header: 0 4px 12px rgb(0 0 0 / 40%);
+  --shadow-panel: 0 1px 2px rgb(0 0 0 / 25%);
+  --shadow-toast: 0 8px 24px rgb(0 0 0 / 50%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --canvas: #101216;
+    --surface: #191c22;
+    --surface-muted: #20242b;
+    --ink: #eceef1;
+    --ink-soft: #9aa1ab;
+    --line: #2a2e36;
+    --line-strong: #3a3f49;
+    --accent: #8b97e8;
+    --accent-hover: #a0aaed;
+    --accent-soft: #262b45;
+    --on-accent: #14161a;
+    --positive: #4cc38a;
+    --positive-soft: #142a1e;
+    --negative: #e5726f;
+    --negative-soft: #331d1d;
+    --negative-line: #5c2e2e;
+    --warning: #d9a514;
+    --warning-soft: #2e2610;
+    --nav: #14161a;
+    --nav-text: #f2f3f5;
+    --nav-control: #22252b;
+    --nav-line: #3a3f49;
+    --nav-muted: #b9bdc4;
+    --placeholder: #6d737d;
+    --toast-bg: #2c2f36;
+    --toast-text: #f2f3f5;
+    --shadow-header: 0 4px 12px rgb(0 0 0 / 40%);
+    --shadow-panel: 0 1px 2px rgb(0 0 0 / 25%);
+    --shadow-toast: 0 8px 24px rgb(0 0 0 / 50%);
+  }
+}
+
+/* Reset + base */
+* { box-sizing: border-box; }
+html { background: var(--canvas); }
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--canvas);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.5;
+}
+button, input, select { font: inherit; letter-spacing: 0; color: inherit; }
+h1, h2, p { letter-spacing: 0; }
+button { min-height: 44px; border: 0; cursor: pointer; background: none; }
+button:disabled { cursor: not-allowed; opacity: .48; }
+button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 32%, transparent);
+  outline-offset: 2px;
+}
+
+/* Shell */
+.shell {
+  width: min(100%, 1184px);
+  margin: 0 auto;
+  padding: 0 16px calc(48px + env(safe-area-inset-bottom, 0px));
+}
+
+/* Topbar — sticky at every size */
+.topbar {
+  position: sticky;
+  z-index: 30;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: var(--topbar-h);
+  margin: 0 -16px;
+  padding: 6px 16px;
+  padding-top: calc(6px + env(safe-area-inset-top, 0px));
+  background: var(--nav);
+  color: var(--nav-text);
+  box-shadow: var(--shadow-header);
+}
+.brand, .topbar-right, .hero-actions, .form-actions, .row-actions, .chip-row { display: flex; align-items: center; gap: 8px; }
+.brand { min-width: max-content; font-size: 14px; font-weight: 700; }
+.brand-mark {
+  display: grid;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 16px;
+}
+.topbar-right { justify-content: flex-end; gap: 6px; }
+.device-name { color: var(--nav-muted); font-size: 13px; font-weight: 600; white-space: nowrap; }
+.topbar .secondary { border-color: var(--nav-line); background: var(--nav-control); color: var(--nav-text); }
+.topbar .secondary:hover:not(:disabled) { border-color: var(--nav-muted); background: var(--nav-control); }
+.topbar .chip { border: 0; }
+
+/* Status toast */
+.toast {
+  position: fixed;
+  z-index: 40;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  left: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 12px 8px 12px 16px;
+  border-radius: 10px;
+  background: var(--toast-bg);
+  color: var(--toast-text);
+  font-size: 14px;
+  box-shadow: var(--shadow-toast);
+}
+.toast-dismiss {
+  flex: 0 0 auto;
+  min-height: 32px;
+  min-width: 32px;
+  border-radius: 8px;
+  color: var(--toast-text);
+  font-size: 18px;
+  line-height: 1;
+}
+.toast-dismiss:hover { background: rgb(255 255 255 / 12%); }
+
+/* Buttons */
+.primary, .secondary {
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: transform 120ms ease-out, background 120ms ease-out, border-color 120ms ease-out;
+}
+.primary { background: var(--accent); color: var(--on-accent); }
+.primary:hover:not(:disabled) { background: var(--accent-hover); transform: translateY(-1px); }
+.secondary { border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); }
+.secondary:hover:not(:disabled) { border-color: var(--ink-soft); background: var(--surface-muted); transform: translateY(-1px); }
+.primary:active:not(:disabled), .secondary:active:not(:disabled) { transform: translateY(0); }
+.compact { min-height: 36px; padding: 5px 10px; font-size: 13px; white-space: nowrap; }
+/* A button that reads as a link — for secondary paths that shouldn't compete
+   with the primary action (e.g. "already set up? sign in" during onboarding).
+   Keeps the 44px target from the base button rule. */
+.link-button {
+  align-self: start;
+  padding: 0;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.link-button:hover:not(:disabled) { color: var(--accent-hover); }
+/* Links styled as buttons (e.g. the APK download) need the flex/underline
+   reset buttons get for free. */
+a.primary, a.secondary { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+
+/* Chips */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+button.chip { cursor: pointer; }
+.chip-active { border-color: var(--accent); background: var(--accent); color: var(--on-accent); }
+.chip-online { border-color: transparent; background: var(--positive-soft); color: var(--positive); }
+.chip-offline { border-color: transparent; background: var(--negative-soft); color: var(--negative); }
+.chip-pending { border-color: transparent; background: var(--warning-soft); color: var(--warning); }
+
+/* Section tab bar — active at every viewport width. A context screen has
+   ~15 panels; showing them all at once on desktop was a ~4000px-tall wall
+   with Settle up and Members far below the fold (unified-expense-os-0fj). */
+.tabbar {
+  position: sticky;
+  z-index: 20;
+  top: calc(var(--topbar-h) + env(safe-area-inset-top, 0px));
+  display: flex;
+  gap: 4px;
+  margin: 0 -16px;
+  padding: 8px 16px;
+  background: var(--canvas);
+  border-bottom: 1px solid var(--line);
+}
+.settings-tabbar { margin-top: var(--space-4); border-radius: 8px 8px 0 0; }
+.tabbed .tab-panel { display: none; }
+.tabbed.active-expenses .tab-expenses,
+.tabbed.active-balances .tab-balances,
+.tabbed.active-reports .tab-reports,
+.tabbed.active-assistant .tab-assistant,
+.tabbed.active-people .tab-people { display: block; }
+.tabbar button {
+  flex: 1;
+  min-height: 40px;
+  border-radius: 8px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  font-weight: 700;
+}
+.tabbar button[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-panel); border: 1px solid var(--line); }
+
+/* Layout */
+.grid { display: grid; grid-template-columns: 1fr; gap: var(--space-4); margin-top: var(--space-4); align-items: start; }
+.column { display: grid; gap: var(--space-4); min-width: 0; }
+.panel {
+  min-width: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow-panel);
+}
+.panel-header { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-3); }
+.panel h2, .panel-header h2 { margin: 0; font-size: var(--text-lg); line-height: 1.35; }
+.panel-header span, .stat-label, .entry-list span, .info-strip span, .hint-card span, .share-hint { color: var(--ink-soft); font-size: 13px; }
+.notes-text { font-style: italic; }
+.progress-track { height: 6px; border-radius: 999px; background: var(--surface-muted); overflow: hidden; margin: 8px 0; }
+.progress-fill { height: 100%; background: var(--accent); transition: width 0.2s ease; }
+.preference-header { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
+
+/* Page headers */
+.page-intro { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-top: 20px; }
+.page-intro h1, .context-header h1 { margin: 0; font-size: var(--text-title); line-height: 1.3; }
+.page-intro p { margin: 4px 0 0; color: var(--ink-soft); font-size: 13px; }
+.context-header { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 16px 0 0; }
+
+/* Onboarding hero */
+.hero { padding: 40px 0 28px; border-bottom: 1px solid var(--line); }
+.onboard { max-width: 960px; }
+.onboard .hero { margin: 0; }
+.eyebrow { margin: 0 0 12px; color: var(--accent); font-size: 12px; font-weight: 700; text-transform: uppercase; }
+.hero h1 { max-width: 680px; margin: 0; font-size: clamp(30px, 6vw, 46px); line-height: 1.08; }
+.lede { max-width: 640px; margin: 14px 0 0; color: var(--ink-soft); font-size: 16px; line-height: 1.6; }
+
+/* Stats */
+.summary-row {
+  display: grid;
+  margin-top: 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow-panel);
+}
+.stat-card { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-2); min-width: 0; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--line); }
+.stat-card:last-child { border-bottom: 0; }
+.stat-value { font-size: var(--text-money); font-weight: 700; line-height: 1.15; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.positive { color: var(--positive); }
+.negative, .error-text { color: var(--negative); }
+.error-text { font-size: 13px; }
+
+/* Forms. `.field` is the standalone variant of an .entry-form label — one
+   look for every labeled text input/select that lives outside a form grid
+   (Settings token/URL fields, device name, …). */
+.entry-form { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.entry-form label, .generate-payer, .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; color: var(--ink); font-size: 13px; font-weight: 600; }
+.field { margin-top: 12px; }
+.entry-form input, .entry-form select, .generate-payer select, .split-amount, .form-actions input,
+.field input, .field select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 16px; /* prevents iOS focus zoom */
+}
+/* Free-standing text inputs (e.g. the UPI/SMS paste box) share the field
+   look; buttons beside them keep their own width. */
+.form-actions input { flex: 1 1 200px; width: auto; }
+.panel textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.5;
+  resize: vertical;
+}
+.entry-form input:hover, .entry-form select:hover, .generate-payer select:hover,
+.form-actions input:hover, .field input:hover, .field select:hover,
+.panel textarea:hover { border-color: var(--ink-soft); }
+.entry-form input::placeholder, .split-amount::placeholder, .form-actions input::placeholder,
+.field input::placeholder, .panel textarea::placeholder { color: var(--placeholder); }
+.wide { grid-column: 1 / -1; }
+.form-actions { flex-wrap: wrap; }
+.form-actions .primary, .form-actions .secondary { flex: 1 1 auto; }
+.chip-row, .row-actions { flex-wrap: wrap; }
+
+/* Custom split rows */
+.split-list { display: grid; gap: 8px; }
+.split-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.split-row .toggle-inline { flex: 1; min-width: 0; }
+.split-amount { flex: 0 0 7.5rem; width: 7.5rem; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* Lists: contexts */
+.context-list, .balance-list, .spend-list, .preference-list, .plan-list { display: grid; }
+.context-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  min-height: 64px;
+  padding: 12px 4px;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+}
+.context-card:last-child { border-bottom: 0; }
+.context-card:hover { background: var(--surface-muted); }
+.context-card > div { display: grid; gap: 3px; min-width: 0; }
+.context-card span { color: var(--ink-soft); font-size: 13px; }
+.context-card strong { overflow-wrap: anywhere; }
+.context-open { color: var(--accent) !important; font-weight: 700; white-space: nowrap; }
+
+/* Lists: ledger / balances / plans */
+.entry-list { margin: 0; padding: 0; list-style: none; }
+.entry-list li, .balance-row, .toggle-row, .plan-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 52px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+.entry-list li:last-child, .balance-row:last-child, .toggle-row:last-child, .plan-row:last-child { border-bottom: 0; }
+.balance-row, .toggle-row, .plan-row { align-items: center; }
+.entry-list li > div { display: grid; gap: 4px; min-width: 0; }
+.entry-list strong, .balance-row span:first-child { overflow-wrap: anywhere; }
+.entry-amount {
+  display: grid;
+  flex: 0 0 auto;
+  gap: 6px;
+  justify-items: end;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.balance-row strong, .plan-row strong { font-size: var(--text-lg); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.history-list { display: grid; gap: 4px; margin: 6px 0 0; padding: 0; color: var(--ink-soft); font-size: 12px; list-style: none; }
+.balance-row-button { width: 100%; background: none; border: none; border-radius: 0; font: inherit; color: inherit; cursor: pointer; text-align: left; }
+.balance-row-button:hover { background: var(--panel-hover, rgba(0, 0, 0, 0.03)); }
+.rejected-row { background: linear-gradient(90deg, var(--negative-soft), transparent); }
+.voided-row { opacity: 0.6; }
+.voided-text { text-decoration: line-through; }
+.inline-edit-form { display: grid; gap: 8px; margin-top: 8px; padding: 10px; border-radius: 8px; background: var(--accent-soft); }
+.inline-edit-form label { display: grid; gap: 2px; font-size: 12px; color: var(--ink-soft); }
+.conflict-banner { margin-top: 6px; padding: 8px; font-size: 12px; }
+
+/* Badges */
+.type-chip, .badge { display: inline-flex; padding: 3px 8px; border-radius: 999px; font-size: 12px; font-style: normal; font-weight: 700; white-space: nowrap; }
+.type-chip { background: var(--accent-soft); color: var(--accent); text-transform: capitalize; }
+.pending-badge { background: var(--warning-soft); color: var(--warning); }
+.rejected-badge { background: var(--negative); color: var(--on-accent); }
+
+/* Strips + hints */
+.info-strip, .hint-card { display: grid; gap: 4px; margin-top: 12px; padding: 12px; border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; background: var(--accent-soft); }
+.alert-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 12px 16px;
+  border: 1px solid var(--negative-line);
+  border-radius: 8px;
+  background: var(--negative-soft);
+  color: var(--negative);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Toggles */
+.toggle-row span:first-of-type, .plan-row span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.toggle-inline { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-soft); font-size: 13px; }
+.toggle-inline input, .toggle-row input { width: 20px; height: 20px; flex: 0 0 auto; accent-color: var(--accent); }
+.compact-toggle { min-height: auto; padding: 0; border: 0; }
+
+/* Misc */
+.invite-code { font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; font-weight: 700; }
+.recurring-form { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); }
+.generate-payer { margin-bottom: 12px; }
+.settlement-result { display: block; margin-top: 10px; font-size: 13px; font-weight: 700; }
+.status { color: var(--ink-soft); font-size: 13px; line-height: 1.5; }
+
+/* Chat assistant */
+/* The panel is a column so the thread can take whatever height is left over
+   after the header, settings, and compose row — instead of being capped at
+   60vh with dead space below it on the full-screen Assistant view. */
+.chat-panel { display: flex; flex-direction: column; min-height: 0; }
+.chat-scroll {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-height: 200px;
+  max-height: min(60vh, 520px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px 2px;
+}
+/* Wherever the assistant is the whole screen (its own view and the context
+   tab), give the panel a real height so that flex: 1 has something to
+   divide. The subtracted space is the app chrome above and below it. */
+.tab-assistant .chat-panel { height: calc(100dvh - 260px); min-height: 340px; }
+.tab-assistant .chat-scroll { max-height: none; }
+.chat-empty { display: grid; gap: 12px; padding: 12px 4px; color: var(--ink-soft); font-size: 14px; }
+.chat-empty p { margin: 0; }
+.chat-bubble {
+  display: grid;
+  gap: 8px;
+  max-width: 92%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+.chat-bubble.user { justify-self: end; background: var(--accent-soft); color: var(--ink); border-bottom-right-radius: 4px; }
+.chat-bubble.assistant { justify-self: start; background: var(--surface-muted); color: var(--ink); border-bottom-left-radius: 4px; }
+/* Bubbles carrying a draft/confirm/entry-list card aren't speech — they're a
+   form. Let them use the full width instead of squeezing a review card into
+   92% of the column. */
+.chat-bubble.has-card { max-width: 100%; width: 100%; }
+/* AI toggles, moved out of the thread into a header disclosure. */
+.chat-settings {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-muted);
+}
+.chat-settings .toggle-row { align-items: start; gap: 12px; }
+.chat-settings .toggle-row > span:first-of-type { display: grid; gap: 4px; font-weight: 700; }
+.chat-settings-hint { color: var(--ink-soft); font-size: 12px; font-weight: 400; line-height: 1.45; }
+.chat-header-note { min-width: 0; }
+button.secondary.is-open { border-color: var(--accent); color: var(--accent); }
+.chat-header-side { display: flex; align-items: center; gap: 10px; min-width: 0; flex-wrap: wrap; justify-content: flex-end; }
+.chat-header-side span { text-align: right; }
+.chat-input-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.chat-input-row input {
+  flex: 1 1 200px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 16px;
+}
+.chat-bubble .draft-card { margin-top: 0; }
+
+/* Bottom nav — phone-first primary navigation (unified-expense-os-oi8).
+   Hidden at desktop widths where the topbar buttons cover the same
+   destinations. --bottomnav-h feeds the shell/toast offsets below. */
+.bottomnav {
+  position: fixed;
+  z-index: 30;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  height: calc(var(--bottomnav-h) + env(safe-area-inset-bottom, 0px));
+  padding: 0 8px env(safe-area-inset-bottom, 0px);
+  background: var(--nav);
+  color: var(--nav-muted);
+  box-shadow: 0 -4px 12px rgb(18 20 24 / 16%);
+}
+.bottomnav button {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  max-width: 120px;
+  color: var(--nav-muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+.bottomnav button.bottomnav-active { color: var(--nav-text); }
+.bottomnav button.bottomnav-active svg { color: var(--accent); }
+.bottomnav-add {
+  align-self: center;
+  flex: 0 0 auto !important;
+  width: 52px;
+  min-height: 52px !important;
+  margin: 0 4px;
+  border-radius: 50%;
+  background: var(--accent) !important;
+  color: var(--on-accent) !important;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.bottomnav-add:active { transform: scale(.96); }
+
+/* Quick-add sheet — global "+" from the bottom nav */
+.sheet-backdrop {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgb(0 0 0 / 45%);
+}
+.sheet {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 720px);
+  max-height: calc(100dvh - 48px - env(safe-area-inset-top, 0px));
+  border-radius: 16px 16px 0 0;
+  background: var(--canvas);
+  animation: sheet-up 180ms ease-out;
+}
+@keyframes sheet-up {
+  from { transform: translateY(24px); opacity: .6; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.sheet-header h2 { margin: 0; font-size: 16px; overflow-wrap: anywhere; }
+.sheet-header select {
+  min-height: 40px;
+  max-width: 60vw;
+  padding: 0 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+}
+.sheet-header-actions { display: flex; flex: 0 0 auto; gap: 8px; }
+.sheet-body {
+  overflow-y: auto;
+  padding: 0 16px calc(16px + env(safe-area-inset-bottom, 0px));
+  overscroll-behavior: contain;
+}
+
+/* Mic button while recording */
+.listening { border-color: var(--negative) !important; color: var(--negative) !important; animation: listening-pulse 1.2s ease-in-out infinite; }
+@keyframes listening-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--negative) 35%, transparent); }
+  50% { box-shadow: 0 0 0 6px transparent; }
+}
+
+/* Narrow phones */
+@media (max-width: 419px) {
+  .brand > span:not(.brand-mark) { display: none; }
+}
+
+/* Phone + small tablet: the bottom nav owns Home/Add/Assistant/Settings, so
+   the topbar duplicates disappear and content + toast clear the nav bar. */
+@media (max-width: 899px) {
+  .device-name { display: none; }
+  .topbar-wide-only { display: none; }
+  /* Five tabs don't fit a narrow phone as equal columns — let the bar
+     scroll sideways instead of shrinking labels to ellipses. */
+  .tabbar { overflow-x: auto; scrollbar-width: none; }
+  .tabbar button { flex: 1 0 auto; padding: 0 14px; }
+  .shell { padding-bottom: calc(24px + var(--bottomnav-h) + env(safe-area-inset-bottom, 0px)); }
+  .toast { bottom: calc(12px + var(--bottomnav-h) + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* Desktop */
+@media (min-width: 900px) {
+  .bottomnav { display: none; }
+  .shell { padding-right: 24px; padding-left: 24px; }
+  .topbar { margin: 0 -24px; padding-right: 24px; padding-left: 24px; }
+  .topbar-right { gap: 8px; }
+  .toast { right: 24px; left: auto; margin: 0; min-width: 320px; }
+  .grid { grid-template-columns: minmax(0, 1.5fr) minmax(300px, 1fr); }
+  /* Context screen panels are tabbed at every width (0fj) — a two-column
+     split would leave one side empty whenever the active tab's panels all
+     live in the other column, so tabbed grids stay single-column and are
+     capped narrower for readability instead of stretching edge-to-edge. */
+  .grid.tabbed { grid-template-columns: 1fr; max-width: 720px; margin-left: auto; margin-right: auto; }
+  .panel { padding: var(--space-5); }
+  .summary-row { grid-template-columns: repeat(3, 1fr); }
+  .stat-card { display: grid; gap: 4px; align-items: start; padding: 20px 24px; border-bottom: 0; border-right: 1px solid var(--line); }
+  .stat-card:last-child { border-right: 0; }
+  .stat-value { font-size: 32px; }
+  .page-intro h1, .context-header h1 { font-size: 24px; }
+  .hero { padding: 64px 0 40px; }
+  .entry-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .recurring-form { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .form-actions .primary, .form-actions .secondary { flex: 0 0 auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}

@@ -1,0 +1,26 @@
+[project]
+name = "unified-expense-os-backend"
+version = "0.1.0"
+description = "Reference backend for the unified personal plus shared expense OS"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.116,<0.117",
+  "sqlalchemy>=2.0.41,<3",
+  "pydantic>=2.11.5,<3",
+  "psycopg[binary]>=3.2.9,<4",
+  "uvicorn>=0.35,<0.36",
+  "webauthn>=3.0.0",
+  "pywebpush>=2.3.0",
+  # Runtime dep, not just tests: every llm_* module posts to the provider
+  # with it (lazily imported, so its absence only surfaced on first use).
+  "httpx>=0.28.1,<0.29",
+]
+
+[dependency-groups]
+dev = [
+  "httpx>=0.28.1,<0.29",
+  "pytest>=8.4.0,<9",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

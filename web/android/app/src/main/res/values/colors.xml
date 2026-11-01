@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand palette: deep green field with a terracotta accent, matching
+         web/public/icon.svg and the app's dark chrome. -->
+    <color name="colorPrimary">#18352b</color>
+    <color name="colorPrimaryDark">#0f231c</color>
+    <color name="colorAccent">#b76d3c</color>
+    <!-- Splash background — same near-black as the dark app chrome / status bar. -->
+    <color name="splash_bg">#14161a</color>
+</resources>

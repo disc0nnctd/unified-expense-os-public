@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Unified Expense OS</string>
+    <string name="title_activity_main">Unified Expense OS</string>
+    <string name="package_name">com.unifiedexpenseos.app</string>
+    <string name="custom_url_scheme">com.unifiedexpenseos.app</string>
+</resources>

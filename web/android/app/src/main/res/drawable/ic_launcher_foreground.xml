@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Brand mark (cream coin + green cross + terracotta centre), scaled from
+     web/public/icon.svg into the 108dp adaptive-icon canvas and centred within
+     the safe zone. The dark-green field comes from @color/ic_launcher_background. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- cream coin -->
+    <path
+        android:fillColor="#f3ede2"
+        android:pathData="M54,19.4 a34.6,34.6 0 1,0 0.01,0 z" />
+    <!-- green cross: horizontal + vertical bars -->
+    <path
+        android:fillColor="#18352b"
+        android:pathData="M34.6,51.9 h38.8 v7.6 h-38.8 z" />
+    <path
+        android:fillColor="#18352b"
+        android:pathData="M49.8,34.6 h8.4 v38.8 h-8.4 z" />
+    <!-- terracotta centre -->
+    <path
+        android:fillColor="#b76d3c"
+        android:pathData="M54,43.03 a10.97,10.97 0 1,0 0.01,0 z" />
+</vector>

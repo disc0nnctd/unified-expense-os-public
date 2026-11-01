@@ -1,0 +1,72 @@
+services:
+  api:
+    build:
+      context: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://expense:expense@postgres:5432/expense_os
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:4173,http://127.0.0.1:4173,http://localhost:5173,http://127.0.0.1:5173}
+      # Passkeys are scoped to a relying-party domain: the RP ID must equal
+      # (or be a suffix of) the domain the web app is served from, and the
+      # origin must match exactly, or browsers reject registration. Set both
+      # in .env for any non-localhost deployment (e.g. a tailnet name).
+      WEBAUTHN_RP_ID: ${WEBAUTHN_RP_ID:-localhost}
+      WEBAUTHN_ORIGIN: ${WEBAUTHN_ORIGIN:-http://localhost:4173}
+      # Server-side LLM assist (NL capture, receipt vision, chat intent).
+      # Without a key the endpoints 503 and the app's deterministic tiers
+      # carry on. Point LLM_BASE_URL at any OpenAI-compatible server (set
+      # LLM_API_KEY_OPTIONAL=1 for keyless LAN inference), or just set
+      # OPENROUTER_API_KEY/LLM_API_KEY in .env.
+      LLM_BASE_URL: ${LLM_BASE_URL:-}
+      LLM_MODEL: ${LLM_MODEL:-}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_API_KEY_OPTIONAL: ${LLM_API_KEY_OPTIONAL:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+    # Loopback-only: tailscale serve (or any TLS-terminating proxy) fronts
+    # these for other devices, and binding 0.0.0.0 would collide with the
+    # serve listener on the tailnet IP at the same port.
+    ports:
+      - "127.0.0.1:8000:8000"
+    # Lets LLM_BASE_URL point at an inference server on the host (e.g. the
+    # llama.cpp failover proxy on :8090) via host.docker.internal.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./web
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-}
+    ports:
+      - "127.0.0.1:4173:4173"
+    depends_on:
+      api:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: expense_os
+      POSTGRES_USER: expense
+      POSTGRES_PASSWORD: expense
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U expense -d expense_os"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

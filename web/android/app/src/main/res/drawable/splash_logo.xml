@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Brand coin mark for the launch splash, drawn on the dark splash field. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="192dp"
+    android:height="192dp"
+    android:viewportWidth="256"
+    android:viewportHeight="256">
+    <path
+        android:fillColor="#f3ede2"
+        android:pathData="M128,46 a82,82 0 1,0 0.01,0 z" />
+    <path
+        android:fillColor="#18352b"
+        android:pathData="M82,123 h92 v18 h-92 z" />
+    <path
+        android:fillColor="#18352b"
+        android:pathData="M118,82 h20 v92 h-20 z" />
+    <path
+        android:fillColor="#b76d3c"
+        android:pathData="M128,102 a26,26 0 1,0 0.01,0 z" />
+</vector>
